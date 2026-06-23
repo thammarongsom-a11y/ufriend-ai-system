@@ -2,54 +2,170 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Ufriend AI System</title>
+<title>Ufriend AI Admin v2</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #0a1c33;
+  color: white;
+}
+
+/* TOP BAR */
+.topbar {
+  background: #0f2f5f;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  color: #ffd84d;
+  font-weight: bold;
+}
+
+/* MAIN */
+.container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* CARD */
+.card {
+  flex: 1;
+  background: #102a4d;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+/* INPUT */
+input, textarea {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+}
+
+textarea {
+  height: 120px;
+}
+
+/* BUTTON */
+button {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  background: #ffd84d;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #ffcc00;
+}
+
+/* RESULT */
+.result {
+  background: #0f2f5f;
+  padding: 15px;
+  border-radius: 10px;
+  min-height: 200px;
+  border-left: 5px solid #ffd84d;
+}
+
+/* COPY BUTTON */
+.copy {
+  background: white;
+  color: #0a1c33;
+}
+</style>
 </head>
+
 <body>
 
-<h2>💬 Ufriend AI Comment System</h2>
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="brand">🚀 Ufriend AI Admin v2</div>
+  <div id="user">Guest</div>
+</div>
 
-<input id="post" placeholder="ชื่อโพส">
+<!-- MAIN -->
+<div class="container">
 
-<br><br>
+  <!-- LEFT -->
+  <div class="card">
 
-<select id="channel">
-  <option value="facebook">Facebook</option>
-  <option value="tiktok">TikTok</option>
-</select>
+    <h3>📝 Input</h3>
 
-<br><br>
+    <input id="post" placeholder="ชื่อโพส">
+    <textarea id="comment" placeholder="คอมเมนต์ลูกค้า"></textarea>
 
-<textarea id="comment" placeholder="คอมเมนต์ลูกค้า"></textarea>
+    <button onclick="generate()">⚡ Generate AI Reply</button>
 
-<br><br>
+  </div>
 
-<input id="admin" placeholder="ชื่อแอดมิน">
+  <!-- RIGHT -->
+  <div class="card">
 
-<br><br>
+    <h3>🤖 AI Result</h3>
 
-<button onclick="send()">Generate AI Comment</button>
+    <div class="result" id="result">
+      ผลลัพธ์จะแสดงที่นี่
+    </div>
 
-<pre id="result"></pre>
+    <button class="copy" onclick="copyText()">📋 Copy Text</button>
+
+  </div>
+
+</div>
 
 <script>
 
-const API_URL = "https://script.google.com/macros/s/AKfycbwh5GMdMUddPWuW28cnmvII3U5XNlPYbINtE7Fi2gIWzWxxbjuMzOd6aOa2cvEo_hqPTg/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzbFSaNUoDCPTkzvjN38Q2CXklFDB34SXYE4b1VwwRGf3Juf5u2IaGGd3j73fsqxhKRDQ/exec";
 
-async function send() {
+let lastReply = "";
+
+// 👤 จำ user จาก login (ถ้ามีระบบในอนาคต)
+let user = localStorage.getItem("user") || "Admin";
+document.getElementById("user").innerText = user;
+
+// 🤖 generate AI
+async function generate() {
+
+  document.getElementById("result").innerHTML = "⏳ AI กำลังคิด...";
+
   const res = await fetch(API_URL, {
     method: "POST",
     body: JSON.stringify({
       post: document.getElementById("post").value,
-      channel: document.getElementById("channel").value,
       comment: document.getElementById("comment").value,
-      admin: document.getElementById("admin").value
+      channel: "system",
+      admin: user
     })
   });
 
   const data = await res.json();
 
-  document.getElementById("result").innerText =
-    "โทน: " + data.tone + "\n\n" + data.reply;
+  lastReply = data.reply;
+
+  document.getElementById("result").innerHTML =
+    "<b>โทน:</b> " + data.tone + "<br><br>" +
+    "<b>คำตอบ:</b><br>" + data.reply;
+}
+
+// 📋 copy
+function copyText() {
+  if (!lastReply) return alert("ยังไม่มีข้อความ");
+
+  navigator.clipboard.writeText(lastReply);
+  alert("คัดลอกแล้ว ✅");
 }
 
 </script>

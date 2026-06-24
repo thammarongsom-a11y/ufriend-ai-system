@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="th">
 <head>
 <meta charset="UTF-8">
@@ -8,286 +7,289 @@
 <title>Ufriend AI Admin</title>
 
 <style>
-
 :root{
- --bg:#f5f7fb;
- --card:#ffffff;
- --text:#111827;
- --border:#e5e7eb;
- --primary:#2563eb;
- --success:#22c55e;
- --danger:#ef4444;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#111827;
+  --border:#e5e7eb;
+  --primary:#2563eb;
+  --primary-hover:#1d4ed8;
+  --success:#22c55e;
+  --danger:#ef4444;
 }
 
 [data-theme="dark"]{
- --bg:#0f172a;
- --card:#1e293b;
- --text:#f8fafc;
- --border:#334155;
- --primary:#3b82f6;
+  --bg:#0f172a;
+  --card:#1e293b;
+  --text:#f8fafc;
+  --border:#334155;
+  --primary:#3b82f6;
+  --primary-hover:#60a5fa;
 }
 
 *{
- box-sizing:border-box;
+  box-sizing:border-box;
 }
 
 body{
- margin:0;
- font-family:'Segoe UI',sans-serif;
- background:var(--bg);
- color:var(--text);
- transition:.3s;
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Segoe UI,Tahoma,sans-serif;
+  transition:.25s;
 }
 
 .header{
- background:var(--card);
- border-bottom:1px solid var(--border);
- padding:16px 24px;
- display:flex;
- justify-content:space-between;
- align-items:center;
- position:sticky;
- top:0;
- z-index:999;
+  position:sticky;
+  top:0;
+  background:var(--card);
+  border-bottom:1px solid var(--border);
+  padding:16px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  z-index:999;
 }
 
 .logo{
- font-size:20px;
- font-weight:700;
+  font-size:20px;
+  font-weight:700;
 }
 
 .theme-btn{
- background:var(--primary);
- color:white;
- border:none;
- border-radius:10px;
- padding:10px 14px;
- cursor:pointer;
+  border:none;
+  background:var(--primary);
+  color:#fff;
+  padding:10px 14px;
+  border-radius:10px;
+  cursor:pointer;
 }
 
 .container{
- max-width:1000px;
- margin:auto;
- padding:20px;
+  max-width:1000px;
+  margin:auto;
+  padding:24px;
 }
 
 .card{
- background:var(--card);
- border:1px solid var(--border);
- border-radius:16px;
- padding:20px;
- margin-bottom:20px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:20px;
+  margin-bottom:20px;
 }
 
-textarea,input{
- width:100%;
- border:1px solid var(--border);
- border-radius:12px;
- padding:12px;
- font-size:14px;
- background:transparent;
- color:var(--text);
+h3{
+  margin-top:0;
+}
+
+textarea,
+input{
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:12px;
+  font-size:14px;
+  background:transparent;
+  color:var(--text);
 }
 
 #post{
- min-height:220px;
- resize:vertical;
+  min-height:240px;
+  resize:vertical;
 }
 
 #comment{
- min-height:120px;
- resize:vertical;
+  min-height:120px;
+  resize:vertical;
 }
 
 #result{
- min-height:180px;
- resize:vertical;
+  min-height:180px;
+  resize:vertical;
 }
 
 .preview{
- margin-top:15px;
- text-align:center;
+  margin-top:15px;
+  text-align:center;
 }
 
 .preview img{
- max-width:100%;
- border-radius:12px;
+  max-width:100%;
+  border-radius:12px;
+}
+
+.button-row{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
 }
 
 .btn{
- width:100%;
- border:none;
- border-radius:12px;
- padding:14px;
- cursor:pointer;
- font-weight:600;
- margin-top:10px;
+  flex:1;
+  min-width:150px;
+  border:none;
+  border-radius:12px;
+  padding:14px;
+  cursor:pointer;
+  font-weight:600;
 }
 
 .generate{
- background:var(--primary);
- color:white;
+  background:var(--primary);
+  color:white;
 }
 
 .copy{
- background:var(--success);
- color:white;
+  background:var(--success);
+  color:white;
 }
 
 .clear{
- background:var(--danger);
- color:white;
+  background:var(--danger);
+  color:white;
 }
 
-.action-row{
- display:flex;
- gap:10px;
-}
-
-.action-row .btn{
- flex:1;
+.status{
+  margin-top:10px;
+  font-size:13px;
+  opacity:.7;
 }
 
 .footer{
- text-align:center;
- padding:20px;
- opacity:.6;
- font-size:13px;
+  text-align:center;
+  padding:24px;
+  font-size:12px;
+  opacity:.6;
 }
-
 </style>
-
 </head>
 
 <body>
 
 <div class="header">
- <div class="logo">🚀 Ufriend AI Admin</div>
+  <div class="logo">🚀 Ufriend AI Admin</div>
 
- <button class="theme-btn" onclick="toggleTheme()">
-  🌙 Theme
- </button>
+  <button class="theme-btn" onclick="toggleTheme()">
+    🌙 Theme
+  </button>
 </div>
 
 <div class="container">
 
- <div class="card">
+  <div class="card">
+    <h3>📝 ชื่อโพส</h3>
 
-  <h3>📝 ชื่อโพส</h3>
+    <textarea
+      id="post"
+      placeholder="วางข้อความโพส Facebook / TikTok..."
+    ></textarea>
 
-  <textarea
-   id="post"
-   placeholder="วางข้อความโพส Facebook / TikTok..."
-  ></textarea>
+    <br><br>
 
-<br><br>
+    <label><b>🎥 ลิงก์วิดีโอ</b></label>
 
-<label>🎥 ลิงก์วิดีโอ</label>
+    <input
+      id="videoUrl"
+      placeholder="https://vt.tiktok.com/... หรือ Reel URL"
+    >
 
-<input
-id="videoUrl"
-placeholder="https://vt.tiktok.com/... หรือ Reel URL"
+    <div class="status">
+      🖼️ รองรับการวางรูปภาพด้วย Ctrl + V
+    </div>
 
->
-
-  <div style="margin-top:15px;">
-   <small>🖼️ รองรับ Ctrl + V เพื่อวางรูปภาพ</small>
+    <div id="imagePreview" class="preview"></div>
   </div>
 
-  <div id="imagePreview" class="preview"></div>
+  <div class="card">
+    <h3>💬 คอมเมนต์ลูกค้า</h3>
 
- </div>
-
- <div class="card">
-
-  <h3>💬 คอมเมนต์ลูกค้า</h3>
-
-  <textarea
-   id="comment"
-   placeholder="คอมเมนต์ลูกค้า..."
-  ></textarea>
-
- </div>
-
- <div class="card">
-
-<button
-class="btn generate"
-onclick="generateReply()">
-⚡ Generate AI Reply </button>
-
- </div>
-
- <div class="card">
-
-  <h3>🤖 คำตอบ AI</h3>
-
-  <textarea
-   id="result"
-   readonly
-   placeholder="ผลลัพธ์จาก AI..."
-  ></textarea>
-
- </div>
-
- <div class="card">
-
-  <div class="action-row">
-
-<button
- id="copyBtn"
- class="btn copy"
- onclick="copyReply()">
-📋 คัดลอกคำตอบ </button>
-
-<button
- class="btn clear"
- onclick="clearForm()">
-🗑️ ล้างข้อมูล </button>
-
+    <textarea
+      id="comment"
+      placeholder="คอมเมนต์ลูกค้า..."
+    ></textarea>
   </div>
 
- </div>
+  <div class="card">
+    <button
+      class="btn generate"
+      onclick="generateReply()">
+      ⚡ Generate AI Reply
+    </button>
+  </div>
+
+  <div class="card">
+    <h3>🤖 คำตอบ AI</h3>
+
+    <textarea
+      id="result"
+      readonly
+      placeholder="ผลลัพธ์จาก AI..."
+    ></textarea>
+  </div>
+
+  <div class="card">
+
+    <div class="button-row">
+
+      <button
+        id="copyBtn"
+        class="btn copy"
+        onclick="copyReply()">
+        📋 คัดลอกคำตอบ
+      </button>
+
+      <button
+        class="btn clear"
+        onclick="clearForm()">
+        🗑️ ล้างข้อมูล
+      </button>
+
+    </div>
+
+  </div>
 
 </div>
 
 <div class="footer">
- Ufriend AI Admin System
+  Ufriend AI Admin System
 </div>
 
 <script>
 
-const API_URL = "YOUR_WEB_APP_URL";
+const API_URL = "https://script.google.com/macros/s/AKfycbz1WrAR6xA6IA7NEuXkeWc-Q6tlLkiXJKC1fWfK2Cd_74MTmHmKVXgMF-NSRIDWokA-EA/exec";
 
 let pastedImage = null;
 
+/* Auto Dark Mode */
 if(
- window.matchMedia &&
- window.matchMedia('(prefers-color-scheme: dark)').matches
+  window.matchMedia &&
+  window.matchMedia("(prefers-color-scheme: dark)").matches
 ){
- document.documentElement.setAttribute('data-theme','dark');
+  document.documentElement.setAttribute("data-theme","dark");
 }
 
 function toggleTheme(){
 
- const current =
- document.documentElement.getAttribute('data-theme');
+  const current =
+    document.documentElement.getAttribute("data-theme");
 
- if(current === 'dark'){
-   document.documentElement.removeAttribute('data-theme');
- }else{
-   document.documentElement.setAttribute('data-theme','dark');
- }
+  if(current === "dark"){
+    document.documentElement.removeAttribute("data-theme");
+  }else{
+    document.documentElement.setAttribute("data-theme","dark");
+  }
 
 }
 
+/* Paste Image */
 document.addEventListener("paste",(e)=>{
 
- const items = e.clipboardData.items;
+  const items = e.clipboardData.items;
 
- for(const item of items){
+  for(const item of items){
 
-   if(item.type.indexOf("image") !== -1){
+    if(item.type.indexOf("image") !== -1){
 
       const file = item.getAsFile();
 
@@ -297,84 +299,89 @@ document.addEventListener("paste",(e)=>{
 
       reader.onload = function(event){
 
-         document.getElementById("imagePreview").innerHTML =
-         '<img src="'+event.target.result+'">';
+        document.getElementById("imagePreview").innerHTML =
+        `<img src="${event.target.result}">`;
 
-      }
+      };
 
       reader.readAsDataURL(file);
 
-   }
+    }
 
- }
+  }
 
 });
 
 async function generateReply(){
 
- const result =
- document.getElementById("result");
+  const result =
+    document.getElementById("result");
 
- result.value = "AI กำลังคิด...";
+  result.value = "AI กำลังคิด...";
 
- try{
+  try{
 
-   const response = await fetch(API_URL,{
-     method:"POST",
-     body:JSON.stringify({
-       post:document.getElementById("post").value,
-       videoUrl:document.getElementById("videoUrl").value,
-       comment:document.getElementById("comment").value,
-       channel:"system"
-     })
-   });
+    const response = await fetch(API_URL,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        post:document.getElementById("post").value,
+        comment:document.getElementById("comment").value,
+        videoUrl:document.getElementById("videoUrl").value,
+        channel:"system"
+      })
+    });
 
-   const data = await response.json();
+    const data = await response.json();
 
-   result.value = data.reply || "";
+    result.value =
+      data.reply || "ไม่พบคำตอบ";
 
- }catch(error){
+  }catch(error){
 
-   result.value =
-   "เกิดข้อผิดพลาด : " + error.message;
+    result.value =
+      "เกิดข้อผิดพลาด : " + error.message;
 
- }
+  }
 
 }
 
 function copyReply(){
 
- const text =
- document.getElementById("result").value;
+  const text =
+    document.getElementById("result").value;
 
- if(!text) return;
+  if(!text) return;
 
- navigator.clipboard.writeText(text);
+  navigator.clipboard.writeText(text);
 
- const btn =
- document.getElementById("copyBtn");
+  const btn =
+    document.getElementById("copyBtn");
 
- btn.innerText = "✅ คัดลอกแล้ว";
+  btn.innerText = "✅ คัดลอกแล้ว";
 
- setTimeout(()=>{
-   btn.innerText = "📋 คัดลอกคำตอบ";
- },1500);
+  setTimeout(()=>{
+    btn.innerText = "📋 คัดลอกคำตอบ";
+  },1500);
 
 }
 
 function clearForm(){
 
- if(!confirm("ต้องการล้างข้อมูลทั้งหมดใช่หรือไม่?")){
-   return;
- }
+  if(!confirm("ต้องการล้างข้อมูลทั้งหมดใช่หรือไม่?")){
+    return;
+  }
 
- document.getElementById("post").value = "";
- document.getElementById("videoUrl").value = "";
- document.getElementById("comment").value = "";
- document.getElementById("result").value = "";
- document.getElementById("imagePreview").innerHTML = "";
+  document.getElementById("post").value = "";
+  document.getElementById("comment").value = "";
+  document.getElementById("videoUrl").value = "";
+  document.getElementById("result").value = "";
 
- pastedImage = null;
+  document.getElementById("imagePreview").innerHTML = "";
+
+  pastedImage = null;
 
 }
 

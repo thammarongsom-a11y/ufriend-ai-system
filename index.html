@@ -1,253 +1,129 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Ufriend AI Admin</title>
-
-<style>
-:root{
-  --bg:#f5f7fb;
-  --card:#ffffff;
-  --text:#111827;
-  --border:#e5e7eb;
-  --primary:#2563eb;
-  --primary-hover:#1d4ed8;
-  --success:#22c55e;
-  --danger:#ef4444;
-}
-
-[data-theme="dark"]{
-  --bg:#0f172a;
-  --card:#1e293b;
-  --text:#f8fafc;
-  --border:#334155;
-  --primary:#3b82f6;
-  --primary-hover:#60a5fa;
-}
-
-*{
-  box-sizing:border-box;
-}
-
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Segoe UI,Tahoma,sans-serif;
-  transition:.25s;
-}
-
-.header{
-  position:sticky;
-  top:0;
-  background:var(--card);
-  border-bottom:1px solid var(--border);
-  padding:16px 24px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  z-index:999;
-}
-
-.logo{
-  font-size:20px;
-  font-weight:700;
-}
-
-.theme-btn{
-  border:none;
-  background:var(--primary);
-  color:#fff;
-  padding:10px 14px;
-  border-radius:10px;
-  cursor:pointer;
-}
-
-.container{
-  max-width:1000px;
-  margin:auto;
-  padding:24px;
-}
-
-.card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:20px;
-  margin-bottom:20px;
-}
-
-h3{
-  margin-top:0;
-}
-
-textarea,
-input{
-  width:100%;
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:12px;
-  font-size:14px;
-  background:transparent;
-  color:var(--text);
-}
-
-#post{
-  min-height:240px;
-  resize:vertical;
-}
-
-#comment{
-  min-height:120px;
-  resize:vertical;
-}
-
-#result{
-  min-height:180px;
-  resize:vertical;
-}
-
-.preview{
-  margin-top:15px;
-  text-align:center;
-}
-
-.preview img{
-  max-width:100%;
-  border-radius:12px;
-}
-
-.button-row{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-.btn{
-  flex:1;
-  min-width:150px;
-  border:none;
-  border-radius:12px;
-  padding:14px;
-  cursor:pointer;
-  font-weight:600;
-}
-
-.generate{
-  background:var(--primary);
-  color:white;
-}
-
-.copy{
-  background:var(--success);
-  color:white;
-}
-
-.clear{
-  background:var(--danger);
-  color:white;
-}
-
-.status{
-  margin-top:10px;
-  font-size:13px;
-  opacity:.7;
-}
-
-.footer{
-  text-align:center;
-  padding:24px;
-  font-size:12px;
-  opacity:.6;
-}
-</style>
-</head>
-
-<body>
+<!-- SECTION USER INFO -->
 
 <div class="header">
   <div class="logo">🚀 Ufriend AI Admin</div>
 
-  <button class="theme-btn" onclick="toggleTheme()">
-    🌙 Theme
-  </button>
+  <div style="display:flex;align-items:center;gap:15px;">
+
+```
+<div class="user">
+  <div id="userName">กำลังโหลด...</div>
+  <div id="userRole"></div>
 </div>
+
+<button class="theme-btn" onclick="toggleTheme()">
+  🌙 Theme
+</button>
+```
+
+  </div>
+</div>
+
+<!-- SECTION POST -->
 
 <div class="container">
 
-  <div class="card">
-    <h3>📝 ชื่อโพส</h3>
+<div class="card">
 
-    <textarea
-      id="post"
-      placeholder="วางข้อความโพส Facebook / TikTok..."
-    ></textarea>
+<h3>📝 ชื่อโพส</h3>
 
-    <br><br>
+<textarea
+  id="post"
+  placeholder="วางข้อความโพส Facebook หรือ TikTok..."
+></textarea>
 
-    <label><b>🎥 ลิงก์วิดีโอ</b></label>
+<br><br>
 
-    <input
-      id="videoUrl"
-      placeholder="https://vt.tiktok.com/... หรือ Reel URL"
-    >
+<label><b>🎥 ลิงก์วิดีโอ</b></label>
 
-    <div class="status">
-      🖼️ รองรับการวางรูปภาพด้วย Ctrl + V
-    </div>
+<input
+id="videoUrl"
+placeholder="https://..."
 
-    <div id="imagePreview" class="preview"></div>
-  </div>
+>
 
-  <div class="card">
-    <h3>💬 คอมเมนต์ลูกค้า</h3>
+<div class="status">
+  🖼️ รองรับ Ctrl + V เพื่อวางรูปภาพ
+</div>
 
-    <textarea
-      id="comment"
-      placeholder="คอมเมนต์ลูกค้า..."
-    ></textarea>
-  </div>
+<div id="imagePreview" class="preview"></div>
 
-  <div class="card">
-    <button
-      class="btn generate"
-      onclick="generateReply()">
-      ⚡ Generate AI Reply
-    </button>
-  </div>
+</div>
 
-  <div class="card">
-    <h3>🤖 คำตอบ AI</h3>
+<!-- SECTION COMMENT -->
 
-    <textarea
-      id="result"
-      readonly
-      placeholder="ผลลัพธ์จาก AI..."
-    ></textarea>
-  </div>
+<div class="card">
 
-  <div class="card">
+<h3>💬 คอมเมนต์ลูกค้า</h3>
 
-    <div class="button-row">
+<textarea
+  id="comment"
+  placeholder="คอมเมนต์ลูกค้า..."
+></textarea>
 
-      <button
-        id="copyBtn"
-        class="btn copy"
-        onclick="copyReply()">
-        📋 คัดลอกคำตอบ
-      </button>
+<div
+  id="commentCount"
+  class="status">
+  0 ตัวอักษร
+</div>
 
-      <button
-        class="btn clear"
-        onclick="clearForm()">
-        🗑️ ล้างข้อมูล
-      </button>
+</div>
 
-    </div>
+<!-- SECTION GENERATE -->
 
-  </div>
+<div class="card">
+
+<button
+id="generateBtn"
+class="btn generate"
+onclick="generateReply()">
+
+⚡ Generate AI Reply
+
+</button>
+
+</div>
+
+<!-- SECTION RESULT -->
+
+<div class="card">
+
+<h3>🤖 คำตอบ AI</h3>
+
+<textarea
+  id="result"
+  readonly
+  placeholder="ผลลัพธ์จาก AI..."
+></textarea>
+
+</div>
+
+<!-- SECTION BUTTON -->
+
+<div class="card">
+
+<div class="button-row">
+
+<button
+id="copyBtn"
+class="btn copy"
+onclick="copyReply()">
+
+📋 คัดลอกคำตอบ
+
+</button>
+
+<button
+class="btn clear"
+onclick="clearForm()">
+
+🗑️ ล้างข้อมูล
+
+</button>
+
+</div>
+
+</div>
 
 </div>
 
@@ -257,135 +133,276 @@ input{
 
 <script>
 
-const API_URL = "https://script.google.com/macros/s/AKfycbzPGDj9eHmK4s7EuYR9_iFUVV3lngshxxqrd3TkjyOUpeGm_MLeoUO3uJq9gybFnvNPHg/exec";
+const API_URL =
+"https://script.google.com/macros/s/YOUR_WEBAPP_URL/exec";
 
 let pastedImage = null;
 
-/* Auto Dark Mode */
-if(
-  window.matchMedia &&
-  window.matchMedia("(prefers-color-scheme: dark)").matches
-){
-  document.documentElement.setAttribute("data-theme","dark");
+/* โหลดข้อมูลผู้ใช้ */
+
+if(typeof google !== "undefined"){
+
+google.script.run
+.withSuccessHandler(function(user){
+
+  if(!user.success) return;
+
+  document.getElementById("userName").innerHTML =
+    "👤 " + user.name;
+
+  document.getElementById("userRole").innerHTML =
+    user.role;
+
+})
+.getCurrentUser();
+
 }
+
+/* Auto Dark Mode */
+
+if(
+window.matchMedia &&
+window.matchMedia("(prefers-color-scheme: dark)").matches
+){
+document.documentElement.setAttribute(
+  "data-theme",
+  "dark"
+);
+}
+
+/* Toggle Theme */
 
 function toggleTheme(){
 
-  const current =
-    document.documentElement.getAttribute("data-theme");
+const html =
+document.documentElement;
 
-  if(current === "dark"){
-    document.documentElement.removeAttribute("data-theme");
-  }else{
-    document.documentElement.setAttribute("data-theme","dark");
-  }
+const btn =
+document.querySelector(".theme-btn");
+
+if(
+html.getAttribute("data-theme")
+==="dark"
+){
+
+html.removeAttribute("data-theme");
+
+btn.innerHTML =
+"🌙 Theme";
+
+}else{
+
+html.setAttribute(
+  "data-theme",
+  "dark"
+);
+
+btn.innerHTML =
+"☀️ Theme";
 
 }
 
-/* Paste Image */
-document.addEventListener("paste",(e)=>{
+}
 
-  const items = e.clipboardData.items;
+/* Character Counter */
 
-  for(const item of items){
+document
+.getElementById("comment")
+.addEventListener(
+"input",
+function(){
 
-    if(item.type.indexOf("image") !== -1){
-
-      const file = item.getAsFile();
-
-      pastedImage = file;
-
-      const reader = new FileReader();
-
-      reader.onload = function(event){
-
-        document.getElementById("imagePreview").innerHTML =
-        `<img src="${event.target.result}">`;
-
-      };
-
-      reader.readAsDataURL(file);
-
-    }
-
-  }
+document.getElementById(
+"commentCount"
+).innerHTML =
+this.value.length +
+" ตัวอักษร";
 
 });
 
-async function generateReply(){
+/* Paste Image */
 
-  const result =
-    document.getElementById("result");
+document.addEventListener(
+"paste",
+(e)=>{
 
-  result.value = "AI กำลังคิด...";
+const items =
+e.clipboardData.items;
 
-  try{
+for(const item of items){
 
-    const response = await fetch(API_URL,{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({
-        post:document.getElementById("post").value,
-        comment:document.getElementById("comment").value,
-        videoUrl:document.getElementById("videoUrl").value,
-        channel:"system"
-      })
-    });
+if(
+item.type.indexOf("image")
+!== -1
+){
 
-    const data = await response.json();
+const file =
+item.getAsFile();
 
-    result.value =
-      data.reply || "ไม่พบคำตอบ";
+pastedImage = file;
 
-  }catch(error){
+const reader =
+new FileReader();
 
-    result.value =
-      "เกิดข้อผิดพลาด : " + error.message;
+reader.onload =
+function(event){
 
-  }
+document.getElementById(
+"imagePreview"
+).innerHTML =
+`<img src="${event.target.result}">`;
+
+};
+
+reader.readAsDataURL(file);
 
 }
+
+}
+
+});
+
+/* Generate AI */
+
+async function generateReply(){
+
+const result =
+document.getElementById(
+"result"
+);
+
+const btn =
+document.getElementById(
+"generateBtn"
+);
+
+btn.disabled = true;
+
+result.value =
+"🤖 AI กำลังคิด...";
+
+try{
+
+const response =
+await fetch(
+API_URL,
+{
+method:"POST",
+headers:{
+"Content-Type":
+"application/json"
+},
+body:JSON.stringify({
+
+post:
+document.getElementById(
+"post"
+).value,
+
+comment:
+document.getElementById(
+"comment"
+).value,
+
+videoUrl:
+document.getElementById(
+"videoUrl"
+).value
+
+})
+}
+);
+
+const data =
+await response.json();
+
+result.value =
+data.reply ||
+"ไม่พบคำตอบ";
+
+}catch(error){
+
+result.value =
+"เกิดข้อผิดพลาด : "
++ error.message;
+
+}
+
+btn.disabled = false;
+
+}
+
+/* Copy */
 
 function copyReply(){
 
-  const text =
-    document.getElementById("result").value;
+const text =
+document.getElementById(
+"result"
+).value;
 
-  if(!text) return;
+if(!text) return;
 
-  navigator.clipboard.writeText(text);
+navigator.clipboard.writeText(
+text
+);
 
-  const btn =
-    document.getElementById("copyBtn");
+const btn =
+document.getElementById(
+"copyBtn"
+);
 
-  btn.innerText = "✅ คัดลอกแล้ว";
+btn.innerHTML =
+"✅ คัดลอกแล้ว";
 
-  setTimeout(()=>{
-    btn.innerText = "📋 คัดลอกคำตอบ";
-  },1500);
+setTimeout(()=>{
+
+btn.innerHTML =
+"📋 คัดลอกคำตอบ";
+
+},1500);
 
 }
 
+/* Clear */
+
 function clearForm(){
 
-  if(!confirm("ต้องการล้างข้อมูลทั้งหมดใช่หรือไม่?")){
-    return;
-  }
+if(
+!confirm(
+"ต้องการล้างข้อมูลทั้งหมดใช่หรือไม่?"
+)
+){
+return;
+}
 
-  document.getElementById("post").value = "";
-  document.getElementById("comment").value = "";
-  document.getElementById("videoUrl").value = "";
-  document.getElementById("result").value = "";
+document.getElementById(
+"post"
+).value = "";
 
-  document.getElementById("imagePreview").innerHTML = "";
+document.getElementById(
+"comment"
+).value = "";
 
-  pastedImage = null;
+document.getElementById(
+"videoUrl"
+).value = "";
+
+document.getElementById(
+"result"
+).value = "";
+
+document.getElementById(
+"imagePreview"
+).innerHTML = "";
+
+document.getElementById(
+"commentCount"
+).innerHTML =
+"0 ตัวอักษร";
+
+pastedImage = null;
 
 }
 
 </script>
-
-</body>
-</html>

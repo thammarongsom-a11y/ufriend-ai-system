@@ -1,408 +1,350 @@
-<!-- SECTION USER INFO -->
+<!DOCTYPE html>
+
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ufriend AI Admin</title>
+
+<style>
+
+:root{
+ --bg:#f5f7fb;
+ --card:#ffffff;
+ --text:#111827;
+ --border:#e5e7eb;
+ --primary:#2563eb;
+ --primary-hover:#1d4ed8;
+ --shadow:0 4px 16px rgba(0,0,0,.08);
+}
+
+[data-theme="dark"]{
+ --bg:#0f172a;
+ --card:#1e293b;
+ --text:#f8fafc;
+ --border:#334155;
+ --primary:#3b82f6;
+ --primary-hover:#60a5fa;
+ --shadow:none;
+}
+
+*{
+ box-sizing:border-box;
+}
+
+body{
+ margin:0;
+ font-family:Segoe UI,Tahoma,sans-serif;
+ background:var(--bg);
+ color:var(--text);
+ transition:.3s;
+}
+
+.header{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ padding:16px 24px;
+ background:var(--card);
+ border-bottom:1px solid var(--border);
+ position:sticky;
+ top:0;
+ z-index:999;
+}
+
+.logo{
+ font-size:20px;
+ font-weight:700;
+}
+
+.theme-btn{
+ border:none;
+ padding:10px 14px;
+ border-radius:10px;
+ cursor:pointer;
+ background:var(--primary);
+ color:#fff;
+}
+
+.container{
+ max-width:1000px;
+ margin:auto;
+ padding:20px;
+}
+
+.card{
+ background:var(--card);
+ border:1px solid var(--border);
+ border-radius:16px;
+ padding:20px;
+ margin-bottom:20px;
+ box-shadow:var(--shadow);
+}
+
+h3{
+ margin-top:0;
+}
+
+textarea,
+input{
+ width:100%;
+ padding:12px;
+ border-radius:12px;
+ border:1px solid var(--border);
+ background:transparent;
+ color:var(--text);
+ font-size:14px;
+}
+
+#post{
+ min-height:220px;
+ resize:vertical;
+}
+
+#comment{
+ min-height:120px;
+ resize:vertical;
+}
+
+#result{
+ min-height:180px;
+ resize:vertical;
+}
+
+.preview{
+ margin-top:15px;
+ text-align:center;
+}
+
+.preview img{
+ max-width:100%;
+ border-radius:12px;
+}
+
+.action-btn{
+ width:100%;
+ border:none;
+ padding:14px;
+ border-radius:12px;
+ cursor:pointer;
+ font-size:15px;
+ font-weight:600;
+}
+
+.generate-btn{
+ background:var(--primary);
+ color:white;
+}
+
+.generate-btn:hover{
+ background:var(--primary-hover);
+}
+
+.copy-btn{
+ background:#22c55e;
+ color:white;
+}
+
+.copy-btn:hover{
+ opacity:.9;
+}
+
+.status{
+ margin-top:10px;
+ font-size:13px;
+ opacity:.7;
+}
+
+</style>
+
+</head>
+
+<body>
 
 <div class="header">
-  <div class="logo">🚀 Ufriend AI Admin</div>
+ <div class="logo">🚀 Ufriend AI Admin</div>
 
-  <div style="display:flex;align-items:center;gap:15px;">
-
-```
-<div class="user">
-  <div id="userName">กำลังโหลด...</div>
-  <div id="userRole"></div>
-</div>
-
-<button class="theme-btn" onclick="toggleTheme()">
+ <button class="theme-btn" onclick="toggleTheme()">
   🌙 Theme
-</button>
-```
-
-  </div>
+ </button>
 </div>
-
-<!-- SECTION POST -->
 
 <div class="container">
 
-<div class="card">
+ <div class="card">
+  <h3>📝 ชื่อโพส</h3>
 
-<h3>📝 ชื่อโพส</h3>
+  <textarea
+   id="post"
+   placeholder="วางข้อความโพส Facebook / TikTok ที่นี่..."
+  ></textarea>
 
-<textarea
-  id="post"
-  placeholder="วางข้อความโพส Facebook หรือ TikTok..."
-></textarea>
-
-<br><br>
-
-<label><b>🎥 ลิงก์วิดีโอ</b></label>
+  <div style="margin-top:15px">
+   <label><b>🎥 ลิงก์วิดีโอ</b></label>
 
 <input
 id="videoUrl"
-placeholder="https://..."
+placeholder="https://vt.tiktok.com/... หรือ Reel URL"
 
 >
 
-<div class="status">
-  🖼️ รองรับ Ctrl + V เพื่อวางรูปภาพ
-</div>
+  </div>
 
-<div id="imagePreview" class="preview"></div>
+  <div class="status">
+   รองรับวางรูปภาพด้วย Ctrl + V
+  </div>
 
-</div>
+  <div class="preview" id="imagePreview"></div>
 
-<!-- SECTION COMMENT -->
+ </div>
 
-<div class="card">
+ <div class="card">
+  <h3>💬 คอมเมนต์ลูกค้า</h3>
 
-<h3>💬 คอมเมนต์ลูกค้า</h3>
+  <textarea
+   id="comment"
+   placeholder="คอมเมนต์ลูกค้า..."
+  ></textarea>
 
-<textarea
-  id="comment"
-  placeholder="คอมเมนต์ลูกค้า..."
-></textarea>
+ </div>
 
-<div
-  id="commentCount"
-  class="status">
-  0 ตัวอักษร
-</div>
+ <div class="card">
+  <button
+   class="action-btn generate-btn"
+   onclick="generateReply()">
+   ⚡ Generate AI Reply
+  </button>
+ </div>
 
-</div>
+ <div class="card">
+  <h3>🤖 คำตอบ AI</h3>
 
-<!-- SECTION GENERATE -->
+  <textarea
+   id="result"
+   readonly
+   placeholder="ผลลัพธ์จาก AI..."
+  ></textarea>
 
-<div class="card">
+ </div>
 
-<button
-id="generateBtn"
-class="btn generate"
-onclick="generateReply()">
+ <div class="card">
+  <button
+   id="copyBtn"
+   class="action-btn copy-btn"
+   onclick="copyReply()">
+   📋 คัดลอกคำตอบ
+  </button>
+ </div>
 
-⚡ Generate AI Reply
-
-</button>
-
-</div>
-
-<!-- SECTION RESULT -->
-
-<div class="card">
-
-<h3>🤖 คำตอบ AI</h3>
-
-<textarea
-  id="result"
-  readonly
-  placeholder="ผลลัพธ์จาก AI..."
-></textarea>
-
-</div>
-
-<!-- SECTION BUTTON -->
-
-<div class="card">
-
-<div class="button-row">
-
-<button
-id="copyBtn"
-class="btn copy"
-onclick="copyReply()">
-
-📋 คัดลอกคำตอบ
-
-</button>
-
-<button
-class="btn clear"
-onclick="clearForm()">
-
-🗑️ ล้างข้อมูล
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="footer">
-  Ufriend AI Admin System
 </div>
 
 <script>
 
-const API_URL =
-"https://script.google.com/macros/s/AKfycbxTegsKPmGfArxByfsvseaVfg3c0Gh8vF4BDepIfKJZwKgd6FQjxzVPsX0QMOzg9ADlqg/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbwJsS5MmYhHaQaOJKCW6vxm52mr-eTEqF6LIEe8ZdgEURtn13Sp5woc2aYxVCUEfD8KrA/exec";
 
 let pastedImage = null;
 
-/* โหลดข้อมูลผู้ใช้ */
-
-if(typeof google !== "undefined"){
-
-google.script.run
-.withSuccessHandler(function(user){
-
-  if(!user.success) return;
-
-  document.getElementById("userName").innerHTML =
-    "👤 " + user.name;
-
-  document.getElementById("userRole").innerHTML =
-    user.role;
-
-})
-.getCurrentUser();
-
-}
-
-/* Auto Dark Mode */
-
 if(
-window.matchMedia &&
-window.matchMedia("(prefers-color-scheme: dark)").matches
+ window.matchMedia &&
+ window.matchMedia('(prefers-color-scheme: dark)').matches
 ){
-document.documentElement.setAttribute(
-  "data-theme",
-  "dark"
-);
+ document.documentElement.setAttribute('data-theme','dark');
 }
-
-/* Toggle Theme */
 
 function toggleTheme(){
 
-const html =
-document.documentElement;
+ const current =
+ document.documentElement.getAttribute('data-theme');
 
-const btn =
-document.querySelector(".theme-btn");
-
-if(
-html.getAttribute("data-theme")
-==="dark"
-){
-
-html.removeAttribute("data-theme");
-
-btn.innerHTML =
-"🌙 Theme";
-
-}else{
-
-html.setAttribute(
-  "data-theme",
-  "dark"
-);
-
-btn.innerHTML =
-"☀️ Theme";
-
+ if(current === 'dark'){
+   document.documentElement.removeAttribute('data-theme');
+ }else{
+   document.documentElement.setAttribute('data-theme','dark');
+ }
 }
 
-}
+document.addEventListener("paste",(e)=>{
 
-/* Character Counter */
+ const items = e.clipboardData.items;
 
-document
-.getElementById("comment")
-.addEventListener(
-"input",
-function(){
+ for(const item of items){
 
-document.getElementById(
-"commentCount"
-).innerHTML =
-this.value.length +
-" ตัวอักษร";
+  if(item.type.indexOf("image") !== -1){
+
+   const file = item.getAsFile();
+
+   pastedImage = file;
+
+   const reader = new FileReader();
+
+   reader.onload = function(event){
+
+    document.getElementById("imagePreview").innerHTML =
+    `<img src="${event.target.result}">`;
+
+   }
+
+   reader.readAsDataURL(file);
+
+  }
+
+ }
 
 });
-
-/* Paste Image */
-
-document.addEventListener(
-"paste",
-(e)=>{
-
-const items =
-e.clipboardData.items;
-
-for(const item of items){
-
-if(
-item.type.indexOf("image")
-!== -1
-){
-
-const file =
-item.getAsFile();
-
-pastedImage = file;
-
-const reader =
-new FileReader();
-
-reader.onload =
-function(event){
-
-document.getElementById(
-"imagePreview"
-).innerHTML =
-`<img src="${event.target.result}">`;
-
-};
-
-reader.readAsDataURL(file);
-
-}
-
-}
-
-});
-
-/* Generate AI */
 
 async function generateReply(){
 
-const result =
-document.getElementById(
-"result"
-);
+ const result = document.getElementById("result");
 
-const btn =
-document.getElementById(
-"generateBtn"
-);
+ result.value = "AI กำลังคิด...";
 
-btn.disabled = true;
+ try{
 
-result.value =
-"🤖 AI กำลังคิด...";
+  const res = await fetch(API_URL,{
+   method:"POST",
+   body:JSON.stringify({
+     post:document.getElementById("post").value,
+     videoUrl:document.getElementById("videoUrl").value,
+     comment:document.getElementById("comment").value,
+     channel:"system"
+   })
+  });
 
-try{
+  const data = await res.json();
 
-const response =
-await fetch(
-API_URL,
-{
-method:"POST",
-headers:{
-"Content-Type":
-"application/json"
-},
-body:JSON.stringify({
+  result.value = data.reply || "";
 
-post:
-document.getElementById(
-"post"
-).value,
+ }catch(error){
 
-comment:
-document.getElementById(
-"comment"
-).value,
+  result.value =
+  "เกิดข้อผิดพลาด: " + error.message;
 
-videoUrl:
-document.getElementById(
-"videoUrl"
-).value
-
-})
-}
-);
-
-const data =
-await response.json();
-
-result.value =
-data.reply ||
-"ไม่พบคำตอบ";
-
-}catch(error){
-
-result.value =
-"เกิดข้อผิดพลาด : "
-+ error.message;
+ }
 
 }
-
-btn.disabled = false;
-
-}
-
-/* Copy */
 
 function copyReply(){
 
-const text =
-document.getElementById(
-"result"
-).value;
+ const text =
+ document.getElementById("result").value;
 
-if(!text) return;
+ if(!text) return;
 
-navigator.clipboard.writeText(
-text
-);
+ navigator.clipboard.writeText(text);
 
-const btn =
-document.getElementById(
-"copyBtn"
-);
+ const btn =
+ document.getElementById("copyBtn");
 
-btn.innerHTML =
-"✅ คัดลอกแล้ว";
+ btn.innerHTML = "✅ คัดลอกแล้ว";
 
-setTimeout(()=>{
-
-btn.innerHTML =
-"📋 คัดลอกคำตอบ";
-
-},1500);
-
-}
-
-/* Clear */
-
-function clearForm(){
-
-if(
-!confirm(
-"ต้องการล้างข้อมูลทั้งหมดใช่หรือไม่?"
-)
-){
-return;
-}
-
-document.getElementById(
-"post"
-).value = "";
-
-document.getElementById(
-"comment"
-).value = "";
-
-document.getElementById(
-"videoUrl"
-).value = "";
-
-document.getElementById(
-"result"
-).value = "";
-
-document.getElementById(
-"imagePreview"
-).innerHTML = "";
-
-document.getElementById(
-"commentCount"
-).innerHTML =
-"0 ตัวอักษร";
-
-pastedImage = null;
+ setTimeout(()=>{
+   btn.innerHTML = "📋 คัดลอกคำตอบ";
+ },1500);
 
 }
 
 </script>
+
+</body>
+</html>

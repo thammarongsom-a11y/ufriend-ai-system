@@ -1,261 +1,80 @@
 <!DOCTYPE html>
-<html lang="th">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ufriend AI Admin Pro</title>
+<title>Ufriend AI SaaS</title>
 
 <style>
-:root{
-  --bg:#f5f7fb;
-  --card:#ffffff;
-  --text:#111827;
-  --border:#e5e7eb;
-  --primary:#2563eb;
-  --success:#22c55e;
-  --danger:#ef4444;
-}
-
-[data-theme="dark"]{
-  --bg:#0f172a;
-  --card:#1e293b;
-  --text:#f8fafc;
-  --border:#334155;
-  --primary:#3b82f6;
-}
-
-*{box-sizing:border-box;}
-
-body{
-  margin:0;
-  font-family:'Segoe UI',sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  transition:.3s;
-}
-
-.header{
-  background:var(--card);
-  border-bottom:1px solid var(--border);
-  padding:16px 24px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  position:sticky;
-  top:0;
-  z-index:999;
-}
-
-.logo{font-size:20px;font-weight:700;}
-
-.theme-btn{
-  background:var(--primary);
-  color:white;
-  border:none;
-  border-radius:10px;
-  padding:10px 14px;
-  cursor:pointer;
-}
-
-.container{
-  max-width:900px;
-  margin:auto;
-  padding:20px;
-}
-
-.card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:20px;
-  margin-bottom:16px;
-}
-
-textarea,input{
-  width:100%;
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:12px;
-  font-size:14px;
-  background:transparent;
-  color:var(--text);
-}
-
-textarea{min-height:120px;resize:vertical;}
-
-#result{min-height:160px;}
-
-.btn{
-  width:100%;
-  border:none;
-  border-radius:12px;
-  padding:14px;
-  cursor:pointer;
-  font-weight:600;
-  margin-top:10px;
-}
-
-.generate{background:var(--primary);color:white;}
-.copy{background:var(--success);color:white;}
-.clear{background:var(--danger);color:white;}
-
-.row{
-  display:flex;
-  gap:10px;
-}
-
-.row .btn{flex:1;}
-
-.preview img{
-  max-width:100%;
-  border-radius:12px;
-  margin-top:10px;
-}
-
-.footer{
-  text-align:center;
-  padding:20px;
-  font-size:12px;
-  opacity:.6;
-}
+body{font-family:sans-serif;background:#f3f4f6}
+#wrap{max-width:800px;margin:auto}
+#chat{height:320px;overflow:auto;background:#fff;padding:10px}
+.msg{margin:5px 0}
+.user{color:blue}
+.ai{color:green}
+#dash{margin-top:10px;background:#fff;padding:10px}
 </style>
 </head>
 
 <body>
 
-<div class="header">
-  <div class="logo">🚀 Ufriend AI Admin Pro</div>
-  <button class="theme-btn" onclick="toggleTheme()">🌙 Theme</button>
-</div>
+<div id="wrap">
 
-<div class="container">
+<h2>💬 Chat AI</h2>
 
-  <!-- POST -->
-  <div class="card">
-    <h3>📝 Post</h3>
-    <textarea id="post" placeholder="วางโพสที่นี่..."></textarea>
-  </div>
+<div id="chat"></div>
 
-  <!-- VIDEO -->
-  <div class="card">
-    <h3>🎥 Video URL</h3>
-    <input id="videoUrl" placeholder="ลิงก์วิดีโอ (ถ้ามี)">
-  </div>
+<input id="msg" style="width:80%">
+<button onclick="send()">Send</button>
 
-  <!-- COMMENT -->
-  <div class="card">
-    <h3>💬 Comment ลูกค้า</h3>
-    <textarea id="comment" placeholder="ข้อความลูกค้า..."></textarea>
-  </div>
+<h2>📊 Dashboard</h2>
+<div id="dash">Loading...</div>
 
-  <!-- ACTION -->
-  <div class="card">
-    <button class="btn generate" onclick="generateReply()">
-      ⚡ Generate AI Reply
-    </button>
-  </div>
-
-  <!-- RESULT -->
-  <div class="card">
-    <h3>🤖 AI Reply</h3>
-    <textarea id="result" readonly placeholder="ผลลัพธ์จาก AI..."></textarea>
-  </div>
-
-  <!-- ACTION BUTTONS -->
-  <div class="card">
-    <div class="row">
-      <button class="btn copy" onclick="copyReply()">📋 Copy</button>
-      <button class="btn clear" onclick="clearForm()">🗑️ Clear</button>
-    </div>
-  </div>
-
-</div>
-
-<div class="footer">
-  Ufriend AI System • Ready for Production
 </div>
 
 <script>
 
-const API_URL = "https://script.google.com/macros/s/AKfycbz5HETvPCCNuFGokbymAya0s3yIuFlimOA8FekPtVcNVkZt6wk0MP8oM5zthA3nXRHdzg/exec";
+const API = "YOUR_WEB_APP_URL";
 
-// 🌙 Theme auto
-if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-  document.documentElement.setAttribute('data-theme','dark');
+async function send(){
+
+  const msg = document.getElementById("msg").value;
+
+  add("You: " + msg, "user");
+
+  const res = await fetch(API,{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({ message: msg })
+  });
+
+  const data = await res.json();
+
+  add("AI: " + data.reply, "ai");
+
+  loadDash();
 }
 
-function toggleTheme(){
-  const t = document.documentElement.getAttribute('data-theme');
-  if(t==='dark'){
-    document.documentElement.removeAttribute('data-theme');
-  }else{
-    document.documentElement.setAttribute('data-theme','dark');
+function add(text, cls){
+  const d = document.createElement("div");
+  d.className = cls;
+  d.innerText = text;
+  document.getElementById("chat").appendChild(d);
+}
+
+async function loadDash(){
+
+  const res = await fetch(API + "?action=dashboard");
+  const data = await res.json();
+
+  let html = "";
+  for (const k in data){
+    html += `<div>👤 ${k} : ${data[k]} msgs</div>`;
   }
+
+  document.getElementById("dash").innerHTML = html;
 }
 
-// 🚀 Generate AI
-async function generateReply(){
-
-  const result = document.getElementById("result");
-  result.value = "⏳ AI กำลังคิด...";
-
-  try{
-
-    const response = await fetch(API_URL,{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({
-        post:document.getElementById("post").value,
-        videoUrl:document.getElementById("videoUrl").value,
-        comment:document.getElementById("comment").value,
-        channel:"web"
-      })
-    });
-
-    if(!response.ok){
-      throw new Error("Server Error: " + response.status);
-    }
-
-    const data = await response.json();
-
-    if(data.error){
-      result.value = "❌ Error: " + data.error;
-      return;
-    }
-
-    result.value = data.reply || "ไม่มีคำตอบ";
-
-  }catch(err){
-    result.value = "❌ " + err.message;
-  }
-}
-
-// 📋 Copy
-function copyReply(){
-  const text = document.getElementById("result").value;
-  if(!text) return;
-
-  navigator.clipboard.writeText(text);
-
-  const btn = event.target;
-  btn.innerText = "✅ Copied";
-
-  setTimeout(()=>{
-    btn.innerText = "📋 Copy";
-  },1500);
-}
-
-// 🧹 Clear
-function clearForm(){
-  if(!confirm("ล้างข้อมูลทั้งหมด?")) return;
-
-  document.getElementById("post").value = "";
-  document.getElementById("videoUrl").value = "";
-  document.getElementById("comment").value = "";
-  document.getElementById("result").value = "";
-}
+loadDash();
 
 </script>
 

@@ -1,381 +1,260 @@
 <!DOCTYPE html>
-
 <html lang="th">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Ufriend AI Admin</title>
+<title>Ufriend AI Admin Pro</title>
 
 <style>
-
 :root{
- --bg:#f5f7fb;
- --card:#ffffff;
- --text:#111827;
- --border:#e5e7eb;
- --primary:#2563eb;
- --success:#22c55e;
- --danger:#ef4444;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#111827;
+  --border:#e5e7eb;
+  --primary:#2563eb;
+  --success:#22c55e;
+  --danger:#ef4444;
 }
 
 [data-theme="dark"]{
- --bg:#0f172a;
- --card:#1e293b;
- --text:#f8fafc;
- --border:#334155;
- --primary:#3b82f6;
+  --bg:#0f172a;
+  --card:#1e293b;
+  --text:#f8fafc;
+  --border:#334155;
+  --primary:#3b82f6;
 }
 
-*{
- box-sizing:border-box;
-}
+*{box-sizing:border-box;}
 
 body{
- margin:0;
- font-family:'Segoe UI',sans-serif;
- background:var(--bg);
- color:var(--text);
- transition:.3s;
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  transition:.3s;
 }
 
 .header{
- background:var(--card);
- border-bottom:1px solid var(--border);
- padding:16px 24px;
- display:flex;
- justify-content:space-between;
- align-items:center;
- position:sticky;
- top:0;
- z-index:999;
+  background:var(--card);
+  border-bottom:1px solid var(--border);
+  padding:16px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:999;
 }
 
-.logo{
- font-size:20px;
- font-weight:700;
-}
+.logo{font-size:20px;font-weight:700;}
 
 .theme-btn{
- background:var(--primary);
- color:white;
- border:none;
- border-radius:10px;
- padding:10px 14px;
- cursor:pointer;
+  background:var(--primary);
+  color:white;
+  border:none;
+  border-radius:10px;
+  padding:10px 14px;
+  cursor:pointer;
 }
 
 .container{
- max-width:1000px;
- margin:auto;
- padding:20px;
+  max-width:900px;
+  margin:auto;
+  padding:20px;
 }
 
 .card{
- background:var(--card);
- border:1px solid var(--border);
- border-radius:16px;
- padding:20px;
- margin-bottom:20px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:20px;
+  margin-bottom:16px;
 }
 
 textarea,input{
- width:100%;
- border:1px solid var(--border);
- border-radius:12px;
- padding:12px;
- font-size:14px;
- background:transparent;
- color:var(--text);
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:12px;
+  font-size:14px;
+  background:transparent;
+  color:var(--text);
 }
 
-#post{
- min-height:220px;
- resize:vertical;
-}
+textarea{min-height:120px;resize:vertical;}
 
-#comment{
- min-height:120px;
- resize:vertical;
-}
-
-#result{
- min-height:180px;
- resize:vertical;
-}
-
-.preview{
- margin-top:15px;
- text-align:center;
-}
-
-.preview img{
- max-width:100%;
- border-radius:12px;
-}
+#result{min-height:160px;}
 
 .btn{
- width:100%;
- border:none;
- border-radius:12px;
- padding:14px;
- cursor:pointer;
- font-weight:600;
- margin-top:10px;
+  width:100%;
+  border:none;
+  border-radius:12px;
+  padding:14px;
+  cursor:pointer;
+  font-weight:600;
+  margin-top:10px;
 }
 
-.generate{
- background:var(--primary);
- color:white;
+.generate{background:var(--primary);color:white;}
+.copy{background:var(--success);color:white;}
+.clear{background:var(--danger);color:white;}
+
+.row{
+  display:flex;
+  gap:10px;
 }
 
-.copy{
- background:var(--success);
- color:white;
-}
+.row .btn{flex:1;}
 
-.clear{
- background:var(--danger);
- color:white;
-}
-
-.action-row{
- display:flex;
- gap:10px;
-}
-
-.action-row .btn{
- flex:1;
+.preview img{
+  max-width:100%;
+  border-radius:12px;
+  margin-top:10px;
 }
 
 .footer{
- text-align:center;
- padding:20px;
- opacity:.6;
- font-size:13px;
+  text-align:center;
+  padding:20px;
+  font-size:12px;
+  opacity:.6;
 }
-
 </style>
-
 </head>
 
 <body>
 
 <div class="header">
- <div class="logo">🚀 Ufriend AI Admin</div>
-
- <button class="theme-btn" onclick="toggleTheme()">
-  🌙 Theme
- </button>
+  <div class="logo">🚀 Ufriend AI Admin Pro</div>
+  <button class="theme-btn" onclick="toggleTheme()">🌙 Theme</button>
 </div>
 
 <div class="container">
 
- <div class="card">
-
-  <h3>📝 ชื่อโพส</h3>
-
-  <textarea
-   id="post"
-   placeholder="วางข้อความโพส Facebook / TikTok..."
-  ></textarea>
-
-<br><br>
-
-<label>🎥 ลิงก์วิดีโอ</label>
-
-<input
-id="videoUrl"
-placeholder="https://vt.tiktok.com/... หรือ Reel URL"
-
->
-
-  <div style="margin-top:15px;">
-   <small>🖼️ รองรับ Ctrl + V เพื่อวางรูปภาพ</small>
+  <!-- POST -->
+  <div class="card">
+    <h3>📝 Post</h3>
+    <textarea id="post" placeholder="วางโพสที่นี่..."></textarea>
   </div>
 
-  <div id="imagePreview" class="preview"></div>
-
- </div>
-
- <div class="card">
-
-  <h3>💬 คอมเมนต์ลูกค้า</h3>
-
-  <textarea
-   id="comment"
-   placeholder="คอมเมนต์ลูกค้า..."
-  ></textarea>
-
- </div>
-
- <div class="card">
-
-<button
-class="btn generate"
-onclick="generateReply()">
-⚡ Generate AI Reply </button>
-
- </div>
-
- <div class="card">
-
-  <h3>🤖 คำตอบ AI</h3>
-
-  <textarea
-   id="result"
-   readonly
-   placeholder="ผลลัพธ์จาก AI..."
-  ></textarea>
-
- </div>
-
- <div class="card">
-
-  <div class="action-row">
-
-<button
- id="copyBtn"
- class="btn copy"
- onclick="copyReply()">
-📋 คัดลอกคำตอบ </button>
-
-<button
- class="btn clear"
- onclick="clearForm()">
-🗑️ ล้างข้อมูล </button>
-
+  <!-- VIDEO -->
+  <div class="card">
+    <h3>🎥 Video URL</h3>
+    <input id="videoUrl" placeholder="ลิงก์วิดีโอ (ถ้ามี)">
   </div>
 
- </div>
+  <!-- COMMENT -->
+  <div class="card">
+    <h3>💬 Comment ลูกค้า</h3>
+    <textarea id="comment" placeholder="ข้อความลูกค้า..."></textarea>
+  </div>
+
+  <!-- ACTION -->
+  <div class="card">
+    <button class="btn generate" onclick="generateReply()">
+      ⚡ Generate AI Reply
+    </button>
+  </div>
+
+  <!-- RESULT -->
+  <div class="card">
+    <h3>🤖 AI Reply</h3>
+    <textarea id="result" readonly placeholder="ผลลัพธ์จาก AI..."></textarea>
+  </div>
+
+  <!-- ACTION BUTTONS -->
+  <div class="card">
+    <div class="row">
+      <button class="btn copy" onclick="copyReply()">📋 Copy</button>
+      <button class="btn clear" onclick="clearForm()">🗑️ Clear</button>
+    </div>
+  </div>
 
 </div>
 
 <div class="footer">
- Ufriend AI Admin System
+  Ufriend AI System • Ready for Production
 </div>
 
 <script>
 
-const API_URL = "https://script.google.com/macros/s/AKfycbyhjUoPqm86d_uQgAeHdLPo4o5zo3OoYRjcb4iI7nPl4IqoKDnwPTNnKkqM-8QAn7z8mw/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbz5HETvPCCNuFGokbymAya0s3yIuFlimOA8FekPtVcNVkZt6wk0MP8oM5zthA3nXRHdzg/exec";
 
-let pastedImage = null;
-
-if(
- window.matchMedia &&
- window.matchMedia('(prefers-color-scheme: dark)').matches
-){
- document.documentElement.setAttribute('data-theme','dark');
+// 🌙 Theme auto
+if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  document.documentElement.setAttribute('data-theme','dark');
 }
 
 function toggleTheme(){
-
- const current =
- document.documentElement.getAttribute('data-theme');
-
- if(current === 'dark'){
-   document.documentElement.removeAttribute('data-theme');
- }else{
-   document.documentElement.setAttribute('data-theme','dark');
- }
-
+  const t = document.documentElement.getAttribute('data-theme');
+  if(t==='dark'){
+    document.documentElement.removeAttribute('data-theme');
+  }else{
+    document.documentElement.setAttribute('data-theme','dark');
+  }
 }
 
-document.addEventListener("paste",(e)=>{
-
- const items = e.clipboardData.items;
-
- for(const item of items){
-
-   if(item.type.indexOf("image") !== -1){
-
-      const file = item.getAsFile();
-
-      pastedImage = file;
-
-      const reader = new FileReader();
-
-      reader.onload = function(event){
-
-         document.getElementById("imagePreview").innerHTML =
-         '<img src="'+event.target.result+'">';
-
-      }
-
-      reader.readAsDataURL(file);
-
-   }
-
- }
-
-});
-
+// 🚀 Generate AI
 async function generateReply(){
 
- const result =
- document.getElementById("result");
+  const result = document.getElementById("result");
+  result.value = "⏳ AI กำลังคิด...";
 
- result.value = "AI กำลังคิด...";
+  try{
 
- try{
+    const response = await fetch(API_URL,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        post:document.getElementById("post").value,
+        videoUrl:document.getElementById("videoUrl").value,
+        comment:document.getElementById("comment").value,
+        channel:"web"
+      })
+    });
 
-   const response = await fetch(API_URL,{
-     method:"POST",
-     body:JSON.stringify({
-       post:document.getElementById("post").value,
-       videoUrl:document.getElementById("videoUrl").value,
-       comment:document.getElementById("comment").value,
-       channel:"system"
-     })
-   });
+    if(!response.ok){
+      throw new Error("Server Error: " + response.status);
+    }
 
-   const data = await response.json();
+    const data = await response.json();
 
-   result.value = data.reply || "";
+    if(data.error){
+      result.value = "❌ Error: " + data.error;
+      return;
+    }
 
- }catch(error){
+    result.value = data.reply || "ไม่มีคำตอบ";
 
-   result.value =
-   "เกิดข้อผิดพลาด : " + error.message;
-
- }
-
+  }catch(err){
+    result.value = "❌ " + err.message;
+  }
 }
 
+// 📋 Copy
 function copyReply(){
+  const text = document.getElementById("result").value;
+  if(!text) return;
 
- const text =
- document.getElementById("result").value;
+  navigator.clipboard.writeText(text);
 
- if(!text) return;
+  const btn = event.target;
+  btn.innerText = "✅ Copied";
 
- navigator.clipboard.writeText(text);
-
- const btn =
- document.getElementById("copyBtn");
-
- btn.innerText = "✅ คัดลอกแล้ว";
-
- setTimeout(()=>{
-   btn.innerText = "📋 คัดลอกคำตอบ";
- },1500);
-
+  setTimeout(()=>{
+    btn.innerText = "📋 Copy";
+  },1500);
 }
 
+// 🧹 Clear
 function clearForm(){
+  if(!confirm("ล้างข้อมูลทั้งหมด?")) return;
 
- if(!confirm("ต้องการล้างข้อมูลทั้งหมดใช่หรือไม่?")){
-   return;
- }
-
- document.getElementById("post").value = "";
- document.getElementById("videoUrl").value = "";
- document.getElementById("comment").value = "";
- document.getElementById("result").value = "";
- document.getElementById("imagePreview").innerHTML = "";
-
- pastedImage = null;
-
+  document.getElementById("post").value = "";
+  document.getElementById("videoUrl").value = "";
+  document.getElementById("comment").value = "";
+  document.getElementById("result").value = "";
 }
 
 </script>
